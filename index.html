@@ -8,7 +8,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="SavingsApp">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2822/2822684.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="icon-180-maskable.svg">
   <title>Savings + Horse Race App</title>
   <style>
     * { 
@@ -91,6 +92,36 @@
     .nav-buttons {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .theme-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .theme-selector label {
+      color: white;
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    .theme-select {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .theme-select:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
     }
 
     .nav-btn {
@@ -242,6 +273,12 @@
       margin: 20px 0;
       box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       backdrop-filter: blur(10px);
+      color: #333;
+    }
+
+    .stats-card label, .stats-card .input-group label {
+      color: #333;
+      text-shadow: none;
     }
 
     .stats-grid {
@@ -258,6 +295,12 @@
       color: white;
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
 
     .stat-value {
@@ -280,6 +323,11 @@
       overflow-x: auto;
       scrollbar-width: thin;
       backdrop-filter: blur(10px);
+      color: #333;
+    }
+
+    .log-container p {
+      color: #666;
     }
 
     .log-table {
@@ -287,12 +335,14 @@
       min-width: 700px;
       border-collapse: collapse;
       font-size: 14px;
+      color: #333;
     }
 
     .log-table th, .log-table td {
       padding: 12px;
       text-align: center;
       border-bottom: 1px solid #eee;
+      color: inherit;
     }
 
     .log-table th {
@@ -737,13 +787,28 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
+      .stats-card label, .stats-card .input-group label {
+        color: #e2e8f0;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      }
+
+      .log-container p {
+        color: #a0aec0;
+      }
+
       .stat-item {
         background: linear-gradient(45deg, #4a5568, #2d3748);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
+      .stat-item:hover {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        transform: scale(1.05);
+      }
+
       .log-table {
         background: rgba(45, 55, 72, 0.9);
+        color: #e2e8f0;
       }
 
       .log-table th {
@@ -828,9 +893,426 @@
       }
     }
 
+    /* Custom Theme Variables */
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --accent-color: #f093fb;
+      --primary-color-rgb: 102, 126, 234;
+      --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --card-background: rgba(255,255,255,0.95);
+      --text-color: #333;
+      --text-color-light: white;
+      --border-color: rgba(255, 255, 255, 0.2);
+      --hover-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Blue Theme */
+    [data-theme="blue"] {
+      --primary-color: #3b82f6;
+      --secondary-color: #1e40af;
+      --accent-color: #60a5fa;
+      --primary-color-rgb: 59, 130, 246;
+      --background-gradient: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    }
+
+    /* Violet Theme */
+    [data-theme="violet"] {
+      --primary-color: #8b5cf6;
+      --secondary-color: #6d28d9;
+      --accent-color: #a78bfa;
+      --primary-color-rgb: 139, 92, 246;
+      --background-gradient: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+    }
+
+    /* Pink Theme */
+    [data-theme="pink"] {
+      --primary-color: #ec4899;
+      --secondary-color: #be185d;
+      --accent-color: #f9a8d4;
+      --primary-color-rgb: 236, 72, 153;
+      --background-gradient: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+    }
+
+    /* Green Theme */
+    [data-theme="green"] {
+      --primary-color: #10b981;
+      --secondary-color: #047857;
+      --accent-color: #6ee7b7;
+      --primary-color-rgb: 16, 185, 129;
+      --background-gradient: linear-gradient(135deg, #10b981 0%, #047857 100%);
+    }
+
+    /* Light Theme */
+    [data-theme="light"] {
+      --primary-color: #4f46e5;
+      --secondary-color: #3730a3;
+      --accent-color: #818cf8;
+      --primary-color-rgb: 79, 70, 229;
+      --background-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      --card-background: rgba(255,255,255,0.9);
+      --text-color: #1f2937;
+      --text-color-light: #374151;
+      --border-color: rgba(0, 0, 0, 0.1);
+      --hover-color: rgba(0, 0, 0, 0.05);
+    }
+
+    /* Dark Theme */
+    [data-theme="dark"] {
+      --primary-color: #6366f1;
+      --secondary-color: #4338ca;
+      --accent-color: #a5b4fc;
+      --primary-color-rgb: 99, 102, 241;
+      --background-gradient: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      --card-background: rgba(31, 41, 55, 0.9);
+      --text-color: #f3f4f6;
+      --text-color-light: #e5e7eb;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --hover-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Apply theme variables */
+    body {
+      background: var(--background-gradient);
+      color: var(--text-color);
+    }
+
+    h1, label, .app-title, .nav-btn, #betSection label, #result {
+      color: var(--text-color-light);
+    }
+
+    input[type="number"], input[type="text"], select, .theme-select {
+      background: var(--card-background);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+
+    input:focus, select:focus, .theme-select:focus {
+      background: var(--card-background);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    input[readonly] {
+      background: var(--hover-color);
+      color: var(--text-color);
+      opacity: 0.7;
+    }
+
+    .slider {
+      background-color: var(--border-color);
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary-color);
+    }
+
+    button {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border: 1px solid var(--border-color);
+    }
+
+    button:hover, button:active {
+      background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+      box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4);
+    }
+
+    .stat-item {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: white;
+    }
+
+    .stat-item:hover {
+      background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+      transform: scale(1.05);
+    }
+
+    .log-table {
+      background: var(--card-background);
+      color: var(--text-color);
+    }
+
+    .log-table th {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: white;
+    }
+
+    .log-table td {
+      color: var(--text-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .log-table tr:hover {
+      background-color: var(--hover-color);
+    }
+
+    .stats-card, .log-container {
+      background: var(--card-background);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .stats-card label, .stats-card .input-group label {
+      color: var(--text-color);
+    }
+
+    .log-container p {
+      color: var(--text-color);
+      opacity: 0.7;
+    }
+
+    .progress-fill {
+      background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    }
+
+    .progress-bar {
+      background: var(--hover-color);
+    }
+
+    .app-header {
+      background: var(--hover-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .nav-btn {
+      background: var(--hover-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-color-light);
+    }
+
+    .nav-btn:hover, .nav-btn:active {
+      background: var(--primary-color);
+      color: white;
+      opacity: 0.9;
+    }
+
+    #betSection {
+      background: var(--hover-color);
+      border: 1px solid var(--border-color);
+    }
+
+    #raceTrack {
+      background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+      border: 3px dashed var(--border-color);
+    }
+
+    .success {
+      background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+      color: white;
+    }
+
+    .modal {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content {
+      background: var(--card-background);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .modal-title {
+      color: var(--primary-color);
+    }
+
+    .close-btn {
+      color: var(--text-color);
+      opacity: 0.7;
+    }
+
+    .close-btn:hover {
+      color: var(--primary-color);
+      opacity: 1;
+    }
+
+    .delete-btn {
+      background: linear-gradient(45deg, #e53e3e, #c53030);
+      color: white;
+    }
+
+    .remove-btn {
+      background: linear-gradient(45deg, #e53e3e, #c53030);
+      color: white;
+    }
+
+    .notification {
+      background: var(--card-background);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .custom-field-item {
+      background: var(--hover-color);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Light theme specific adjustments */
+    [data-theme="light"] .app-title,
+    [data-theme="light"] .nav-btn,
+    [data-theme="light"] h1,
+    [data-theme="light"] label,
+    [data-theme="light"] #betSection label,
+    [data-theme="light"] #result,
+    [data-theme="light"] .theme-selector label {
+      color: var(--text-color);
+      text-shadow: none;
+    }
+
+    [data-theme="light"] input[type="number"],
+    [data-theme="light"] input[type="text"],
+    [data-theme="light"] select,
+    [data-theme="light"] .theme-select {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+
+    [data-theme="light"] input:focus,
+    [data-theme="light"] select:focus,
+    [data-theme="light"] .theme-select:focus {
+      background: rgba(255, 255, 255, 1);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    [data-theme="light"] .log-table tr:hover {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    [data-theme="light"] .nav-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--text-color);
+    }
+
+    [data-theme="light"] .nav-btn:hover,
+    [data-theme="light"] .nav-btn:active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    /* Dark theme specific adjustments */
+    [data-theme="dark"] input[type="number"],
+    [data-theme="dark"] input[type="text"],
+    [data-theme="dark"] select,
+    [data-theme="dark"] .theme-select {
+      background: rgba(31, 41, 55, 0.9);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+
+    [data-theme="dark"] input:focus,
+    [data-theme="dark"] select:focus,
+    [data-theme="dark"] .theme-select:focus {
+      background: rgba(31, 41, 55, 1);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    [data-theme="dark"] .log-table tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    [data-theme="dark"] .slider {
+      background-color: #4a5568;
+    }
+
+    [data-theme="dark"] input:checked + .slider {
+      background-color: var(--primary-color);
+    }
+
+    /* Ensure all themes get proper input styling */
+    [data-theme="blue"] input[type="number"],
+    [data-theme="blue"] input[type="text"],
+    [data-theme="blue"] select,
+    [data-theme="blue"] .theme-select,
+    [data-theme="violet"] input[type="number"],
+    [data-theme="violet"] input[type="text"],
+    [data-theme="violet"] select,
+    [data-theme="violet"] .theme-select,
+    [data-theme="pink"] input[type="number"],
+    [data-theme="pink"] input[type="text"],
+    [data-theme="pink"] select,
+    [data-theme="pink"] .theme-select,
+    [data-theme="green"] input[type="number"],
+    [data-theme="green"] input[type="text"],
+    [data-theme="green"] select,
+    [data-theme="green"] .theme-select {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    [data-theme="blue"] input:focus,
+    [data-theme="blue"] select:focus,
+    [data-theme="blue"] .theme-select:focus,
+    [data-theme="violet"] input:focus,
+    [data-theme="violet"] select:focus,
+    [data-theme="violet"] .theme-select:focus,
+    [data-theme="pink"] input:focus,
+    [data-theme="pink"] select:focus,
+    [data-theme="pink"] .theme-select:focus,
+    [data-theme="green"] input:focus,
+    [data-theme="green"] select:focus,
+    [data-theme="green"] .theme-select:focus {
+      background: rgba(255, 255, 255, 1);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    /* Remove old media query overrides */
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme]) {
+        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+        color: #e2e8f0;
+      }
+
+      body:not([data-theme]) .container {
+        color: #e2e8f0;
+      }
+
+      body:not([data-theme]) .app-header {
+        background: rgba(45, 55, 72, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      body:not([data-theme]) .app-title, 
+      body:not([data-theme]) .nav-btn, 
+      body:not([data-theme]) h1, 
+      body:not([data-theme]) label {
+        color: #e2e8f0;
+      }
+
+      body:not([data-theme]) input[type="number"], 
+      body:not([data-theme]) input[type="text"], 
+      body:not([data-theme]) select {
+        background: rgba(45, 55, 72, 0.9);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      body:not([data-theme]) .stats-card, 
+      body:not([data-theme]) .log-container {
+        background: rgba(45, 55, 72, 0.9);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      body:not([data-theme]) .log-table {
+        background: rgba(45, 55, 72, 0.9);
+        color: #e2e8f0;
+      }
+
+      body:not([data-theme]) .log-table td {
+        color: #e2e8f0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+    }
+
       /* Dark mode responsive adjustments */
       @media (prefers-color-scheme: dark) {
-        .custom-field-item {
+        body:not([data-theme]) .custom-field-item {
           background: rgba(74, 85, 104, 0.3);
           border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -838,7 +1320,7 @@
 
       /* Light mode responsive adjustments */
       @media (prefers-color-scheme: light) {
-        .custom-field-item {
+        body:not([data-theme]) .custom-field-item {
           background: rgba(255, 255, 255, 0.1);
           border: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -846,16 +1328,44 @@
 
     /* Light mode specific overrides */
     @media (prefers-color-scheme: light) {
-      body {
+      body:not([data-theme]) {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       }
 
-      .progress-fill {
+      body:not([data-theme]) .progress-fill {
         background: linear-gradient(45deg, #667eea, #764ba2);
       }
 
-      .modal-title {
+      body:not([data-theme]) .modal-title {
         color: #667eea;
+      }
+
+      body:not([data-theme]) .stats-card {
+        background: rgba(255,255,255,0.95);
+        color: #333;
+      }
+
+      body:not([data-theme]) .stats-card label, 
+      body:not([data-theme]) .stats-card .input-group label {
+        color: #333;
+        text-shadow: none;
+      }
+
+      body:not([data-theme]) .log-container {
+        background: rgba(255,255,255,0.95);
+        color: #333;
+      }
+
+      body:not([data-theme]) .log-container p {
+        color: #666;
+      }
+
+      body:not([data-theme]) .log-table {
+        color: #333;
+      }
+
+      body:not([data-theme]) .log-table td {
+        color: #333;
       }
     }
   </style>
@@ -865,10 +1375,22 @@
   <!-- Calculator Section -->
   <div id="calculatorSection" class="container visible">
     <div class="app-header">
-      <div class="app-title">� Savings Tracker</div>
+      <div class="app-title">💰 Savings Tracker</div>
       <div class="nav-buttons">
         <button class="nav-btn" onclick="switchToRace()">🐴 Race</button>
         <button class="nav-btn" onclick="showStats()">📊 Stats</button>
+        <div class="theme-selector">
+          <label>🎨 Theme:</label>
+          <select class="theme-select" id="themeSelect" onchange="changeTheme()">
+            <option value="default">Default (Auto)</option>
+            <option value="light">☀️ Light</option>
+            <option value="dark">🌙 Dark</option>
+            <option value="blue">💙 Blue</option>
+            <option value="violet">💜 Violet</option>
+            <option value="pink">💗 Pink</option>
+            <option value="green">💚 Green</option>
+          </select>
+        </div>
       </div>
     </div>
 
@@ -881,9 +1403,9 @@
         <span class="stat-value" id="avgSavings">₱0</span>
         <span class="stat-label">Avg/Month</span>
       </div>
-      <div class="stat-item">
+      <div class="stat-item" onclick="editGoal()" style="cursor: pointer; transition: all 0.3s ease;">
         <span class="stat-value" id="savingsGoal">₱10,000</span>
-        <span class="stat-label">Goal</span>
+        <span class="stat-label">Goal 🎯</span>
       </div>
     </div>
 
@@ -962,6 +1484,18 @@
       <div class="nav-buttons">
         <button class="nav-btn" onclick="switchToCalculator()">⬅ Back</button>
         <button class="nav-btn" onclick="resetRace()">🔄 Reset</button>
+        <div class="theme-selector">
+          <label>🎨 Theme:</label>
+          <select class="theme-select" id="raceThemeSelect" onchange="changeTheme()">
+            <option value="default">Default (Auto)</option>
+            <option value="light">☀️ Light</option>
+            <option value="dark">🌙 Dark</option>
+            <option value="blue">💙 Blue</option>
+            <option value="violet">💜 Violet</option>
+            <option value="pink">💗 Pink</option>
+            <option value="green">💚 Green</option>
+          </select>
+        </div>
       </div>
     </div>
 
@@ -1058,6 +1592,30 @@
     </div>
   </div>
 
+  <!-- Edit Goal Modal -->
+  <div id="goalModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">🎯 Set Savings Goal</h2>
+        <button class="close-btn" onclick="closeGoalModal()">&times;</button>
+      </div>
+      
+      <div class="input-group">
+        <label>💰 Target Amount</label>
+        <input type="number" id="goalInput" placeholder="Enter your savings goal" min="1" step="100">
+      </div>
+
+      <p style="color: #666; font-size: 14px; margin: 10px 0;">
+        💡 Set a realistic savings goal to track your progress and stay motivated!
+      </p>
+
+      <div class="modal-buttons">
+        <button onclick="updateGoal()" style="background: linear-gradient(45deg, #4CAF50, #45a049);">🎯 Set Goal</button>
+        <button onclick="closeGoalModal()" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24);">❌ Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Enhanced PWA App with modern features
     const calculatorSection = document.getElementById('calculatorSection');
@@ -1069,10 +1627,14 @@
     const cutoff2Input = document.getElementById("cutoff2");
     const autoToggle = document.getElementById("autoToggle");
     const customFieldsContainer = document.getElementById("customFields");
+    const themeSelect = document.getElementById("themeSelect");
+    const raceThemeSelect = document.getElementById("raceThemeSelect");
 
     let logs = JSON.parse(localStorage.getItem("savingsLogs")) || [];
     let customFieldTemplates = JSON.parse(localStorage.getItem("customFieldTemplates")) || [];
     let raceStats = JSON.parse(localStorage.getItem("raceStats")) || { won: 0, total: 0 };
+    let savingsGoal = parseFloat(localStorage.getItem("savingsGoal")) || 10000;
+    let currentTheme = localStorage.getItem("selectedTheme") || "default";
     let isRacing = false;
     let currentEditingId = null;
 
@@ -1116,6 +1678,116 @@
           deferredPrompt = null;
         });
       }
+    }
+
+    // Theme Management Functions
+    function changeTheme() {
+      const selectedTheme = themeSelect.value;
+      currentTheme = selectedTheme;
+      
+      // Sync both theme selectors
+      if (raceThemeSelect) {
+        raceThemeSelect.value = selectedTheme;
+      }
+      
+      applyTheme(selectedTheme);
+      localStorage.setItem("selectedTheme", selectedTheme);
+      
+      const themeNames = {
+        default: "Default (Auto)",
+        light: "Light ☀️",
+        dark: "Dark 🌙",
+        blue: "Blue 💙",
+        violet: "Violet 💜",
+        pink: "Pink 💗",
+        green: "Green 💚"
+      };
+      
+      showNotification(`Switched to ${themeNames[selectedTheme]} theme! 🎨`);
+    }
+
+    function applyTheme(theme) {
+      const body = document.body;
+      
+      // Remove all theme attributes
+      body.removeAttribute('data-theme');
+      
+      if (theme === 'default') {
+        // Let CSS media queries handle default behavior
+        updateThemeColorMeta();
+      } else {
+        // Apply specific theme
+        body.setAttribute('data-theme', theme);
+        updateThemeColorMeta(theme);
+      }
+    }
+
+    function updateThemeColorMeta(theme = null) {
+      const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+      const statusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+      
+      const themeColors = {
+        light: '#f8fafc',
+        dark: '#1f2937',
+        blue: '#3b82f6',
+        violet: '#8b5cf6',
+        pink: '#ec4899',
+        green: '#10b981',
+        default: '#6246ea'
+      };
+      
+      const statusBarStyles = {
+        light: 'default',
+        dark: 'black-translucent',
+        blue: 'default',
+        violet: 'default',
+        pink: 'default',
+        green: 'default',
+        default: 'default'
+      };
+      
+      if (theme) {
+        themeColorMeta.content = themeColors[theme] || themeColors.default;
+        if (statusBarMeta) {
+          statusBarMeta.content = statusBarStyles[theme] || statusBarStyles.default;
+        }
+      } else {
+        // Auto detect system preference for default theme
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        themeColorMeta.content = isDark ? themeColors.dark : themeColors.default;
+        if (statusBarMeta) {
+          statusBarMeta.content = isDark ? statusBarStyles.dark : statusBarStyles.default;
+        }
+      }
+    }
+
+    function initializeTheme() {
+      // Set initial theme
+      applyTheme(currentTheme);
+      
+      // Set theme selectors to current theme
+      if (themeSelect) {
+        themeSelect.value = currentTheme;
+      }
+      if (raceThemeSelect) {
+        raceThemeSelect.value = currentTheme;
+      }
+      
+      // Setup theme change listeners for both selectors
+      if (raceThemeSelect) {
+        raceThemeSelect.addEventListener('change', function() {
+          themeSelect.value = this.value;
+          changeTheme();
+        });
+      }
+      
+      // Listen for system theme changes only if using default theme
+      const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      darkModeMediaQuery.addEventListener('change', () => {
+        if (currentTheme === 'default') {
+          updateThemeColorMeta();
+        }
+      });
     }
 
     // Enhanced UI Functions
@@ -1426,20 +2098,53 @@
 
     // Click outside modal to close
     window.onclick = function(event) {
-      const modal = document.getElementById('editModal');
-      if (event.target === modal) {
+      const editModal = document.getElementById('editModal');
+      const goalModal = document.getElementById('goalModal');
+      if (event.target === editModal) {
         closeEditModal();
+      }
+      if (event.target === goalModal) {
+        closeGoalModal();
+      }
+    }
+
+    function editGoal() {
+      const goalInput = document.getElementById('goalInput');
+      goalInput.value = savingsGoal;
+      document.getElementById('goalModal').style.display = 'block';
+      goalInput.focus();
+      showNotification('Set your savings target! 🎯');
+    }
+
+    function closeGoalModal() {
+      document.getElementById('goalModal').style.display = 'none';
+    }
+
+    function updateGoal() {
+      const newGoal = parseFloat(document.getElementById('goalInput').value);
+      if (newGoal && newGoal > 0) {
+        savingsGoal = newGoal;
+        localStorage.setItem('savingsGoal', savingsGoal.toString());
+        updateStats();
+        closeGoalModal();
+        showNotification(`Goal updated to ₱${savingsGoal.toLocaleString()}! 🎯✨`);
+        
+        if ('vibrate' in navigator) {
+          navigator.vibrate(200);
+        }
+      } else {
+        showNotification('Please enter a valid amount! 😅');
       }
     }
 
     function updateStats() {
       const totalSaved = logs.reduce((sum, log) => sum + log.saved, 0);
       const avgSavings = logs.length > 0 ? totalSaved / logs.length : 0;
-      const goal = 10000; // Default goal
-      const progress = Math.min((totalSaved / goal) * 100, 100);
+      const progress = Math.min((totalSaved / savingsGoal) * 100, 100);
 
       document.getElementById('totalSaved').textContent = `₱${totalSaved.toFixed(2)}`;
       document.getElementById('avgSavings').textContent = `₱${avgSavings.toFixed(2)}`;
+      document.getElementById('savingsGoal').textContent = `₱${savingsGoal.toLocaleString()}`;
       document.getElementById('progressFill').style.width = `${progress}%`;
 
       if (progress >= 100) {
@@ -1662,7 +2367,7 @@
       updateStats();
       initializeRace();
       updateRaceStats();
-      setupThemeDetection();
+      initializeTheme();
       
       // Add touch feedback for better mobile experience
       document.querySelectorAll('input, button, select').forEach(element => {
@@ -1674,46 +2379,6 @@
         });
       });
     });
-
-    // Dynamic theme detection and status bar color update
-    function setupThemeDetection() {
-      const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const lightModeMediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-      
-      function updateThemeColor(isDark) {
-        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-        if (isDark) {
-          themeColorMeta.content = '#2d3748'; // Dark theme color
-        } else {
-          themeColorMeta.content = '#6246ea'; // Light theme color
-        }
-        
-        // Update status bar style for iOS
-        const statusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-        if (statusBarMeta) {
-          statusBarMeta.content = isDark ? 'black-translucent' : 'default';
-        }
-        
-        // Show notification when theme changes
-        showNotification(`Switched to ${isDark ? 'dark' : 'light'} mode! 🌙🌟`);
-      }
-      
-      // Initial theme setup
-      updateThemeColor(darkModeMediaQuery.matches);
-      
-      // Listen for theme changes
-      darkModeMediaQuery.addEventListener('change', (e) => {
-        if (e.matches) {
-          updateThemeColor(true);
-        }
-      });
-      
-      lightModeMediaQuery.addEventListener('change', (e) => {
-        if (e.matches) {
-          updateThemeColor(false);
-        }
-      });
-    }
 
     // Handle app visibility changes
     document.addEventListener('visibilitychange', () => {

@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffb347;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="horseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a0522d;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="4" dy="8" stdDeviation="6" flood-opacity="0.3"/>
+    </filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)" stroke="white" stroke-width="16"/>
+  
+  <!-- Main Piggy Bank Body -->
+  <ellipse cx="256" cy="290" rx="120" ry="90" fill="#ff9a9e" filter="url(#shadow)"/>
+  
+  <!-- Piggy Bank Details -->
+  <ellipse cx="256" cy="280" rx="110" ry="80" fill="#ffb3ba"/>
+  
+  <!-- Snout -->
+  <ellipse cx="256" cy="250" rx="30" ry="20" fill="#ff8a95"/>
+  <circle cx="246" cy="245" r="5" fill="#d63384"/>
+  <circle cx="266" cy="245" r="5" fill="#d63384"/>
+  
+  <!-- Eyes -->
+  <circle cx="230" cy="220" r="12" fill="white"/>
+  <circle cx="282" cy="220" r="12" fill="white"/>
+  <circle cx="230" cy="220" r="6" fill="black"/>
+  <circle cx="282" cy="220" r="6" fill="black"/>
+  <circle cx="232" cy="218" r="2" fill="white"/> <!-- Eye shine -->
+  <circle cx="284" cy="218" r="2" fill="white"/> <!-- Eye shine -->
+  
+  <!-- Coin Slot -->
+  <rect x="246" y="185" width="20" height="8" rx="4" fill="#d63384"/>
+  
+  <!-- Legs -->
+  <circle cx="200" cy="360" r="18" fill="#ff8a95"/>
+  <circle cx="312" cy="360" r="18" fill="#ff8a95"/>
+  <circle cx="230" cy="360" r="18" fill="#ff8a95"/>
+  <circle cx="282" cy="360" r="18" fill="#ff8a95"/>
+  
+  <!-- Tail -->
+  <path d="M 380 260 Q 410 250 405 280 Q 395 310 375 285" stroke="#ff8a95" stroke-width="8" fill="none" stroke-linecap="round"/>
+  
+  <!-- Horse Silhouette (small) -->
+  <g transform="translate(400, 150) scale(0.3)" fill="url(#horseGradient)" opacity="0.6">
+    <path d="M 0 0 Q 20 -10 40 0 Q 50 10 45 25 Q 40 40 25 35 Q 10 30 5 15 Z"/>
+    <circle cx="35" cy="12" r="3" fill="white"/>
+  </g>
+  
+  <!-- Floating Coins -->
+  <circle cx="150" cy="150" r="25" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="150" y="162" text-anchor="middle" font-family="serif" font-size="28" font-weight="bold" fill="#b8860b">₱</text>
+  
+  <circle cx="370" cy="200" r="18" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="370" y="208" text-anchor="middle" font-family="serif" font-size="20" font-weight="bold" fill="#b8860b">₱</text>
+  
+  <circle cx="180" cy="380" r="15" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="180" y="388" text-anchor="middle" font-family="serif" font-size="16" font-weight="bold" fill="#b8860b">₱</text>
+  
+  <circle cx="350" cy="350" r="12" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="350" y="357" text-anchor="middle" font-family="serif" font-size="14" font-weight="bold" fill="#b8860b">₱</text>
+  
+  <!-- Progress/Growth Arrow -->
+  <path d="M 120 120 L 160 80 L 150 85 L 180 55 L 185 65 L 175 70 L 200 40" 
+        stroke="white" stroke-width="6" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M 190 50 L 200 40 L 200 50 Z" fill="white" filter="url(#glow)"/>
+  
+  <!-- Sparkles -->
+  <path d="M 100 100 L 105 115 L 120 110 L 105 125 L 100 140 L 95 125 L 80 115 L 95 110 Z" fill="white" opacity="0.9" filter="url(#glow)"/>
+  <path d="M 420 100 L 423 110 L 435 107 L 423 117 L 420 127 L 417 117 L 405 110 L 417 110 Z" fill="white" opacity="0.8" filter="url(#glow)"/>  
+  <path d="M 100 420 L 102 428 L 112 425 L 102 433 L 100 441 L 98 433 L 88 428 L 98 428 Z" fill="white" opacity="0.7" filter="url(#glow)"/>
+  <path d="M 420 420 L 421 425 L 428 424 L 421 430 L 420 435 L 419 430 L 412 425 L 419 425 Z" fill="white" opacity="0.6" filter="url(#glow)"/>
+</svg>

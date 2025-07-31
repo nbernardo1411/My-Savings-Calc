@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffb347;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Maskable safe area (center 80%) -->
+  <rect x="18" y="18" width="144" height="144" rx="30" fill="url(#bgGradient)"/>
+  
+  <!-- Main Piggy Bank Body -->
+  <ellipse cx="90" cy="105" rx="35" ry="28" fill="#ff9a9e" filter="url(#shadow)"/>
+  
+  <!-- Piggy Bank Details -->
+  <ellipse cx="90" cy="100" rx="32" ry="25" fill="#ffb3ba"/>
+  
+  <!-- Snout -->
+  <ellipse cx="90" cy="92" rx="10" ry="6" fill="#ff8a95"/>
+  <circle cx="87" cy="90" r="1.5" fill="#d63384"/>
+  <circle cx="93" cy="90" r="1.5" fill="#d63384"/>
+  
+  <!-- Eyes -->
+  <circle cx="83" cy="82" r="3" fill="white"/>
+  <circle cx="97" cy="82" r="3" fill="white"/>
+  <circle cx="83" cy="82" r="1.5" fill="black"/>
+  <circle cx="97" cy="82" r="1.5" fill="black"/>
+  
+  <!-- Coin Slot -->
+  <rect x="87" y="70" width="6" height="2" rx="1" fill="#d63384"/>
+  
+  <!-- Legs -->
+  <circle cx="75" cy="125" r="4" fill="#ff8a95"/>
+  <circle cx="105" cy="125" r="4" fill="#ff8a95"/>
+  <circle cx="82" cy="125" r="4" fill="#ff8a95"/>
+  <circle cx="98" cy="125" r="4" fill="#ff8a95"/>
+  
+  <!-- Floating Coins -->
+  <circle cx="65" cy="65" r="6" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="65" y="68" text-anchor="middle" font-family="serif" font-size="7" font-weight="bold" fill="#b8860b">₱</text>
+  
+  <circle cx="118" cy="80" r="5" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="118" y="83" text-anchor="middle" font-family="serif" font-size="6" font-weight="bold" fill="#b8860b">₱</text>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffb347;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="96" cy="96" r="88" fill="url(#bgGradient)" stroke="white" stroke-width="8"/>
+  
+  <!-- Main Piggy Bank Body -->
+  <ellipse cx="96" cy="110" rx="45" ry="35" fill="#ff9a9e" filter="url(#shadow)"/>
+  
+  <!-- Piggy Bank Details -->
+  <ellipse cx="96" cy="105" rx="40" ry="30" fill="#ffb3ba"/>
+  
+  <!-- Snout -->
+  <ellipse cx="96" cy="95" rx="12" ry="8" fill="#ff8a95"/>
+  <circle cx="93" cy="93" r="2" fill="#d63384"/>
+  <circle cx="99" cy="93" r="2" fill="#d63384"/>
+  
+  <!-- Eyes -->
+  <circle cx="88" cy="85" r="4" fill="white"/>
+  <circle cx="104" cy="85" r="4" fill="white"/>
+  <circle cx="88" cy="85" r="2" fill="black"/>
+  <circle cx="104" cy="85" r="2" fill="black"/>
+  
+  <!-- Coin Slot -->
+  <rect x="92" y="70" width="8" height="3" rx="1" fill="#d63384"/>
+  
+  <!-- Legs -->
+  <circle cx="78" cy="135" r="6" fill="#ff8a95"/>
+  <circle cx="114" cy="135" r="6" fill="#ff8a95"/>
+  <circle cx="84" cy="135" r="6" fill="#ff8a95"/>
+  <circle cx="108" cy="135" r="6" fill="#ff8a95"/>
+  
+  <!-- Tail -->
+  <path d="M 140 100 Q 150 95 148 105 Q 145 115 138 108" stroke="#ff8a95" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- Floating Coins -->
+  <circle cx="65" cy="60" r="8" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="65" y="66" text-anchor="middle" font-family="serif" font-size="10" font-weight="bold" fill="#b8860b">₱</text>
+  
+  <circle cx="130" cy="75" r="6" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="130" y="79" text-anchor="middle" font-family="serif" font-size="8" font-weight="bold" fill="#b8860b">₱</text>
+  
+  <circle cx="70" cy="140" r="5" fill="url(#coinGradient)" filter="url(#shadow)"/>
+  <text x="70" y="143" text-anchor="middle" font-family="serif" font-size="7" font-weight="bold" fill="#b8860b">₱</text>
+  
+  <!-- Sparkles -->
+  <path d="M 45 45 L 47 50 L 52 48 L 47 53 L 45 58 L 43 53 L 38 50 L 43 48 Z" fill="white" opacity="0.8"/>
+  <path d="M 150 45 L 151 48 L 155 47 L 151 50 L 150 53 L 149 50 L 145 48 L 149 48 Z" fill="white" opacity="0.8"/>  
+  <path d="M 45 150 L 46 152 L 49 151 L 46 154 L 45 156 L 44 154 L 41 152 L 44 152 Z" fill="white" opacity="0.6"/>
+</svg>
