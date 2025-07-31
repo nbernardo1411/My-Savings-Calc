@@ -1,0 +1,36 @@
+{
+  "name": "Savings + Horse Race App",
+  "short_name": "SavingsApp",
+  "description": "Track your savings and enjoy mini horse races!",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fcefee",
+  "theme_color": "#6246ea",
+  "categories": ["finance", "entertainment", "productivity"],
+  "lang": "en",
+  "scope": "./",
+  "prefer_related_applications": false,
+  "display_override": ["window-controls-overlay", "standalone"],
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2822/2822684.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2822/2822684.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/320x568/6246ea/ffffff?text=Savings+Tracker",
+      "sizes": "320x568",
+      "type": "image/png"
+    }
+  ]
+}

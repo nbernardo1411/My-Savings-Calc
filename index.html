@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6246ea" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SavingsApp">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2822/2822684.png">
+  <title>Savings + Horse Race App</title>
+  <style>
+    * { 
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      padding: 0;
+      color: #333;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      display: none;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .visible { 
+      display: block; 
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+      font-size: 2.2rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: bounce 2s infinite;
+    }
+
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .app-title {
+      color: white;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 25px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .nav-btn:hover, .nav-btn:active {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.05);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      font-size: 16px;
+    }
+
+    input[type="number"], input[type="text"], select {
+      padding: 15px;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      background: rgba(255,255,255,1);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    input[readonly] {
+      background: rgba(255,255,255,0.7);
+      color: #666;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    button {
+      padding: 18px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover, button:active {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      animation: pulse 0.6s ease-in-out;
+    }
+
+    button:active {
+      transform: translateY(-1px);
+    }
+
+    .button-ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    .stats-card {
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 15px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .log-container {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.95);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      overflow-x: auto;
+      scrollbar-width: thin;
+      backdrop-filter: blur(10px);
+    }
+
+    .log-table {
+      width: 100%;
+      min-width: 700px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .log-table th, .log-table td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    .log-table th {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      font-weight: bold;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .log-table tr:hover {
+      background-color: #f8f9fa;
+      transform: scale(1.01);
+      transition: all 0.2s ease;
+    }
+
+    .delete-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .success {
+      background: linear-gradient(45deg, #55a3ff, #48cae4);
+      color: white;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 15px;
+      text-align: center;
+      font-weight: bold;
+      animation: slideIn 0.5s ease-out;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    #raceTrack {
+      position: relative;
+      width: 100%;
+      height: 350px;
+      border: 3px dashed rgba(255,255,255,0.8);
+      background: linear-gradient(90deg, #ffeaa7, #fab1a0);
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 20px 0;
+      box-shadow: inset 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .finish-line {
+      position: absolute;
+      right: 10px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: repeating-linear-gradient(
+        45deg,
+        #000,
+        #000 10px,
+        #fff 10px,
+        #fff 20px
+      );
+    }
+
+    .horse {
+      position: absolute;
+      width: 50px;
+      font-size: 2.5rem;
+      transition: all 0.1s linear;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .horse.racing {
+      animation: horseRun 0.3s infinite;
+    }
+
+    @keyframes horseRun {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .horse.winner {
+      animation: winner 1s infinite;
+    }
+
+    @keyframes winner {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.2) rotate(-5deg); }
+      75% { transform: scale(1.2) rotate(5deg); }
+    }
+
+    #betSection {
+      margin-top: 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    #betSection label {
+      color: white;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    #result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .custom-field-item {
+      display: flex;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .custom-field-item input {
+      flex: 1;
+    }
+
+    .remove-btn {
+      background: #ff6b6b;
+      border: none;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      min-width: 50px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background: rgba(255,255,255,0.95);
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      backdrop-filter: blur(15px);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+      padding-bottom: 15px;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+      padding: 5px;
+      width: auto;
+      margin: 0;
+    }
+
+    .close-btn:hover {
+      color: #ff6b6b;
+      transform: scale(1.1);
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      margin: 0;
+    }
+
+    @media (max-width: 480px) {
+      .modal-content {
+        margin: 10% auto;
+        width: 95%;
+        padding: 20px;
+      }
+    }
+
+    .floating-action {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .floating-action:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.9);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 25px;
+      z-index: 1001;
+      animation: slideDown 0.5s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateX(-50%) translateY(-100%); }
+      to { transform: translateX(-50%) translateY(0); }
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .log-table {
+        font-size: 12px;
+      }
+      
+      .log-table th, .log-table td {
+        padding: 8px;
+      }
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+        color: #e2e8f0;
+      }
+
+      .container {
+        color: #e2e8f0;
+      }
+
+      .app-header {
+        background: rgba(45, 55, 72, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .app-title, .nav-btn, h1, label {
+        color: #e2e8f0;
+      }
+
+      .nav-btn {
+        background: rgba(74, 85, 104, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-btn:hover, .nav-btn:active {
+        background: rgba(74, 85, 104, 0.8);
+      }
+
+      input[type="number"], input[type="text"], select {
+        background: rgba(45, 55, 72, 0.9);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      input:focus, select:focus {
+        background: rgba(45, 55, 72, 1);
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+      }
+
+      input[readonly] {
+        background: rgba(74, 85, 104, 0.7);
+        color: #a0aec0;
+      }
+
+      .slider {
+        background-color: #4a5568;
+      }
+
+      input:checked + .slider {
+        background-color: #667eea;
+      }
+
+      button {
+        background: linear-gradient(45deg, #4a5568, #2d3748);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      button:hover, button:active {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .stats-card, .log-container {
+        background: rgba(45, 55, 72, 0.9);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .stat-item {
+        background: linear-gradient(45deg, #4a5568, #2d3748);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .log-table {
+        background: rgba(45, 55, 72, 0.9);
+      }
+
+      .log-table th {
+        background: linear-gradient(45deg, #2d3748, #4a5568);
+        color: #e2e8f0;
+      }
+
+      .log-table td {
+        color: #e2e8f0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .log-table tr:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      .delete-btn {
+        background: linear-gradient(45deg, #e53e3e, #c53030);
+      }
+
+      .success {
+        background: linear-gradient(45deg, #38a169, #2f855a);
+        color: white;
+      }
+
+      #raceTrack {
+        background: linear-gradient(90deg, #2d3748, #4a5568);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      #betSection {
+        background: rgba(45, 55, 72, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      #betSection label {
+        color: #e2e8f0;
+      }
+
+      #result {
+        color: #e2e8f0;
+      }
+
+      .modal {
+        background: rgba(0, 0, 0, 0.9);
+      }
+
+      .modal-content {
+        background: rgba(45, 55, 72, 0.95);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .modal-title {
+        color: #81c784;
+      }
+
+      .close-btn {
+        color: #a0aec0;
+      }
+
+      .close-btn:hover {
+        color: #e53e3e;
+      }
+
+      .remove-btn {
+        background: linear-gradient(45deg, #e53e3e, #c53030);
+      }
+
+      .notification {
+        background: rgba(45, 55, 72, 0.95);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .progress-bar {
+        background: rgba(74, 85, 104, 0.5);
+      }
+
+      .progress-fill {
+        background: linear-gradient(45deg, #81c784, #66bb6a);
+      }
+    }
+
+    /* Light mode specific overrides */
+    @media (prefers-color-scheme: light) {
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .progress-fill {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+      }
+
+      .modal-title {
+        color: #667eea;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Calculator Section -->
+  <div id="calculatorSection" class="container visible">
+    <div class="app-header">
+      <div class="app-title">� Savings Tracker</div>
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="switchToRace()">🐴 Race</button>
+        <button class="nav-btn" onclick="showStats()">📊 Stats</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-value" id="totalSaved">₱0</span>
+        <span class="stat-label">Total Saved</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="avgSavings">₱0</span>
+        <span class="stat-label">Avg/Month</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="savingsGoal">₱10,000</span>
+        <span class="stat-label">Goal</span>
+      </div>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+
+    <div class="stats-card">
+      <div class="input-group">
+        <label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="autoToggle" checked onchange="toggleAuto()">
+            <span class="slider"></span>
+          </div>
+          Auto Calculate Monthly Salary
+        </label>
+      </div>
+      
+      <div class="input-group">
+        <label>💰 1st Cutoff Salary</label>
+        <input type="number" id="cutoff1" oninput="updateMonthlySalary()" placeholder="Enter 1st cutoff amount">
+      </div>
+      
+      <div class="input-group">
+        <label>💰 2nd Cutoff Salary</label>
+        <input type="number" id="cutoff2" oninput="updateMonthlySalary()" placeholder="Enter 2nd cutoff amount">
+      </div>
+      
+      <div class="input-group">
+        <label>💵 Monthly Salary</label>
+        <input type="number" id="salary" readonly>
+      </div>
+
+      <div class="input-group">
+        <label>👨‍👩‍👧‍👦 Parent Support</label>
+        <input type="number" id="parent" placeholder="Monthly parent support">
+      </div>
+      
+      <div class="input-group">
+        <label>🏠 Rent</label>
+        <input type="number" id="rent" placeholder="Monthly rent">
+      </div>
+      
+      <div class="input-group">
+        <label>🛒 1st Cutoff Expenses</label>
+        <input type="number" id="first" placeholder="First half expenses">
+      </div>
+      
+      <div class="input-group">
+        <label>🛒 2nd Cutoff Expenses</label>
+        <input type="number" id="second" placeholder="Second half expenses">
+      </div>
+      
+      <div class="input-group">
+        <label>💸 Other Expenses</label>
+        <input type="number" id="other" placeholder="Other monthly expenses">
+      </div>
+
+      <div class="input-group">
+        <label>⚙️ Custom Expenses</label>
+        <div id="customFields"></div>
+        <button type="button" onclick="addCustomField()">➕ Add Custom Field</button>
+      </div>
+
+      <button onclick="saveEntry()">💾 Save Entry</button>
+    </div>
+
+    <div id="calcResult" class="success" style="display:none;"></div>
+    <div class="log-container" id="logBox"></div>
+  </div>
+
+  <!-- Horse Race Section -->
+  <div id="raceSection" class="container">
+    <div class="app-header">
+      <div class="app-title">🏇 Uma Musume Prix</div>
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="switchToCalculator()">⬅ Back</button>
+        <button class="nav-btn" onclick="resetRace()">🔄 Reset</button>
+      </div>
+    </div>
+
+    <div id="raceTrack">
+      <div class="finish-line"></div>
+    </div>
+
+    <div id="betSection">
+      <label>🎯 Choose your champion:</label>
+      <select id="horseSelect"></select>
+      <button onclick="startRace()">🏁 Start Race!</button>
+      <button onclick="randomBet()">🎲 Lucky Pick</button>
+    </div>
+
+    <div id="result"></div>
+    
+    <div class="stats-card">
+      <h3 style="text-align: center; margin-bottom: 15px;">🏆 Race Statistics</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-value" id="racesWon">0</span>
+          <span class="stat-label">Races Won</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="totalRaces">0</span>
+          <span class="stat-label">Total Races</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="winRate">0%</span>
+          <span class="stat-label">Win Rate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Entry Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">✏️ Edit Entry</h2>
+        <button class="close-btn" onclick="closeEditModal()">&times;</button>
+      </div>
+      
+      <div class="input-group">
+        <label>💰 1st Cutoff Salary</label>
+        <input type="number" id="editCutoff1" placeholder="Enter 1st cutoff amount">
+      </div>
+      
+      <div class="input-group">
+        <label>💰 2nd Cutoff Salary</label>
+        <input type="number" id="editCutoff2" placeholder="Enter 2nd cutoff amount">
+      </div>
+      
+      <div class="input-group">
+        <label>💵 Monthly Salary</label>
+        <input type="number" id="editSalary" placeholder="Total monthly salary">
+      </div>
+
+      <div class="input-group">
+        <label>👨‍👩‍👧‍👦 Parent Support</label>
+        <input type="number" id="editParent" placeholder="Monthly parent support">
+      </div>
+      
+      <div class="input-group">
+        <label>🏠 Rent</label>
+        <input type="number" id="editRent" placeholder="Monthly rent">
+      </div>
+      
+      <div class="input-group">
+        <label>🛒 1st Cutoff Expenses</label>
+        <input type="number" id="editFirst" placeholder="First half expenses">
+      </div>
+      
+      <div class="input-group">
+        <label>🛒 2nd Cutoff Expenses</label>
+        <input type="number" id="editSecond" placeholder="Second half expenses">
+      </div>
+      
+      <div class="input-group">
+        <label>💸 Other Expenses</label>
+        <input type="number" id="editOther" placeholder="Other monthly expenses">
+      </div>
+
+      <div class="input-group">
+        <label>⚙️ Custom Expenses</label>
+        <div id="editCustomFields"></div>
+        <button type="button" onclick="addEditCustomField()">➕ Add Custom Field</button>
+      </div>
+
+      <div class="modal-buttons">
+        <button onclick="updateEntry()" style="background: linear-gradient(45deg, #4CAF50, #45a049);">💾 Update Entry</button>
+        <button onclick="closeEditModal()" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24);">❌ Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Enhanced PWA App with modern features
+    const calculatorSection = document.getElementById('calculatorSection');
+    const raceSection = document.getElementById('raceSection');
+    const logBox = document.getElementById("logBox");
+    const calcResult = document.getElementById("calcResult");
+    const salaryInput = document.getElementById("salary");
+    const cutoff1Input = document.getElementById("cutoff1");
+    const cutoff2Input = document.getElementById("cutoff2");
+    const autoToggle = document.getElementById("autoToggle");
+    const customFieldsContainer = document.getElementById("customFields");
+
+    let logs = JSON.parse(localStorage.getItem("savingsLogs")) || [];
+    let customFieldTemplates = JSON.parse(localStorage.getItem("customFieldTemplates")) || [];
+    let raceStats = JSON.parse(localStorage.getItem("raceStats")) || { won: 0, total: 0 };
+    let isRacing = false;
+    let currentEditingId = null;
+
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+            showNotification('App ready for offline use! 🚀');
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+
+    // PWA Install prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallButton();
+    });
+
+    function showInstallButton() {
+      const installBtn = document.createElement('button');
+      installBtn.innerHTML = '📱 Install App';
+      installBtn.className = 'nav-btn';
+      installBtn.onclick = installApp;
+      document.querySelector('.nav-buttons').appendChild(installBtn);
+    }
+
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showNotification('Thanks for installing! 🎉');
+          }
+          deferredPrompt = null;
+        });
+      }
+    }
+
+    // Enhanced UI Functions
+    function switchToRace() {
+      calculatorSection.classList.remove('visible');
+      raceSection.classList.add('visible');
+      updateRaceStats();
+    }
+
+    function switchToCalculator() {
+      raceSection.classList.remove('visible');
+      calculatorSection.classList.add('visible');
+      updateStats();
+    }
+
+    function showNotification(message, duration = 3000) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, duration);
+    }
+
+    function addRippleEffect(event) {
+      const button = event.currentTarget;
+      const circle = document.createElement("span");
+      const diameter = Math.max(button.clientWidth, button.clientHeight);
+      const radius = diameter / 2;
+
+      circle.style.width = circle.style.height = `${diameter}px`;
+      circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+      circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+      circle.classList.add("button-ripple");
+
+      const ripple = button.getElementsByClassName("button-ripple")[0];
+      if (ripple) {
+        ripple.remove();
+      }
+
+      button.appendChild(circle);
+    }
+
+    // Add ripple effect to all buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', addRippleEffect);
+      });
+    });
+
+    function updateMonthlySalary() {
+      if (autoToggle.checked) {
+        const c1 = parseFloat(cutoff1Input.value) || 0;
+        const c2 = parseFloat(cutoff2Input.value) || 0;
+        salaryInput.value = (c1 + c2).toFixed(2);
+      }
+      updateStats();
+    }
+
+    function toggleAuto() {
+      if (autoToggle.checked) {
+        salaryInput.setAttribute("readonly", true);
+        updateMonthlySalary();
+      } else {
+        salaryInput.removeAttribute("readonly");
+      }
+    }
+
+    function addCustomField(name = "", value = "") {
+      const fieldId = `custom_${Date.now()}`;
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("custom-field-item");
+      wrapper.id = fieldId;
+
+      wrapper.innerHTML = `
+        <input type="text" class="custom-name" value="${name}" placeholder="Field name">
+        <input type="number" class="custom-value" value="${value}" placeholder="Amount" />
+        <button type="button" class="remove-btn" onclick="removeCustomField('${fieldId}')">❌</button>
+      `;
+
+      customFieldsContainer.appendChild(wrapper);
+      saveCustomTemplates();
+    }
+
+    function removeCustomField(id) {
+      const field = document.getElementById(id);
+      if (field) {
+        field.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => {
+          field.remove();
+          saveCustomTemplates();
+        }, 300);
+      }
+    }
+
+    function saveCustomTemplates() {
+      const templates = [];
+      document.querySelectorAll("#customFields .custom-field-item").forEach(group => {
+        const name = group.querySelector(".custom-name").value.trim();
+        if (name) templates.push(name);
+      });
+      localStorage.setItem("customFieldTemplates", JSON.stringify(templates));
+    }
+
+    function loadCustomFields() {
+      customFieldTemplates.forEach(name => addCustomField(name, ""));
+    }
+
+    function saveEntry() {
+      const salary = parseFloat(salaryInput.value) || 0;
+      const parent = parseFloat(document.getElementById("parent").value) || 0;
+      const rent = parseFloat(document.getElementById("rent").value) || 0;
+      const first = parseFloat(document.getElementById("first").value) || 0;
+      const second = parseFloat(document.getElementById("second").value) || 0;
+      const other = parseFloat(document.getElementById("other").value) || 0;
+
+      const customFieldElems = document.querySelectorAll('#customFields .custom-field-item');
+      let customTotal = 0;
+      const customData = [];
+
+      customFieldElems.forEach(group => {
+        const nameInput = group.querySelector('.custom-name');
+        const valueInput = group.querySelector('.custom-value');
+        const name = nameInput.value.trim();
+        const value = parseFloat(valueInput.value) || 0;
+        if (name) {
+          customData.push({ name, value });
+          customTotal += value;
+        }
+      });
+
+      const total = parent + rent + first + second + other + customTotal;
+      const saveable = salary - total;
+      const date = new Date().toLocaleString();
+
+      const log = {
+        id: Date.now(),
+        date,
+        salary,
+        parent,
+        rent,
+        first,
+        second,
+        other,
+        customData,
+        total,
+        saved: saveable
+      };
+
+      logs.unshift(log);
+      localStorage.setItem("savingsLogs", JSON.stringify(logs));
+      renderLogs();
+      saveCustomTemplates();
+      updateStats();
+
+      calcResult.style.display = "block";
+      const emoji = saveable > 0 ? '🎉' : '😰';
+      calcResult.innerHTML = `${emoji} Saved ₱${saveable.toFixed(2)}!`;
+      
+      setTimeout(() => calcResult.style.display = "none", 4000);
+      
+      // Vibrate on mobile if supported
+      if ('vibrate' in navigator) {
+        navigator.vibrate(200);
+      }
+      
+      showNotification(`Entry saved! ${emoji}`);
+    }
+
+    function deleteEntry(id) {
+      if (confirm('Are you sure you want to delete this entry?')) {
+        logs = logs.filter(log => log.id !== id);
+        localStorage.setItem("savingsLogs", JSON.stringify(logs));
+        renderLogs();
+        updateStats();
+        showNotification('Entry deleted! 🗑️');
+      }
+    }
+
+    function editEntry(id) {
+      const entry = logs.find(log => log.id === id);
+      if (!entry) return;
+
+      currentEditingId = id;
+      
+      // Populate the edit form
+      document.getElementById('editSalary').value = entry.salary || '';
+      document.getElementById('editParent').value = entry.parent || '';
+      document.getElementById('editRent').value = entry.rent || '';
+      document.getElementById('editFirst').value = entry.first || '';
+      document.getElementById('editSecond').value = entry.second || '';
+      document.getElementById('editOther').value = entry.other || '';
+      
+      // Clear and populate custom fields
+      const editCustomContainer = document.getElementById('editCustomFields');
+      editCustomContainer.innerHTML = '';
+      
+      if (entry.customData && entry.customData.length > 0) {
+        entry.customData.forEach(customField => {
+          addEditCustomField(customField.name, customField.value);
+        });
+      }
+      
+      // Show the modal
+      document.getElementById('editModal').style.display = 'block';
+      showNotification('Editing entry... ✏️');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+      currentEditingId = null;
+      
+      // Clear the form
+      document.getElementById('editSalary').value = '';
+      document.getElementById('editParent').value = '';
+      document.getElementById('editRent').value = '';
+      document.getElementById('editFirst').value = '';
+      document.getElementById('editSecond').value = '';
+      document.getElementById('editOther').value = '';
+      document.getElementById('editCustomFields').innerHTML = '';
+    }
+
+    function addEditCustomField(name = "", value = "") {
+      const fieldId = `editCustom_${Date.now()}`;
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("custom-field-item");
+      wrapper.id = fieldId;
+
+      wrapper.innerHTML = `
+        <input type="text" class="custom-name" value="${name}" placeholder="Field name">
+        <input type="number" class="custom-value" value="${value}" placeholder="Amount" />
+        <button type="button" class="remove-btn" onclick="removeEditCustomField('${fieldId}')">❌</button>
+      `;
+
+      document.getElementById('editCustomFields').appendChild(wrapper);
+    }
+
+    function removeEditCustomField(id) {
+      const field = document.getElementById(id);
+      if (field) {
+        field.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => {
+          field.remove();
+        }, 300);
+      }
+    }
+
+    function updateEntry() {
+      if (!currentEditingId) return;
+
+      const salary = parseFloat(document.getElementById("editSalary").value) || 0;
+      const parent = parseFloat(document.getElementById("editParent").value) || 0;
+      const rent = parseFloat(document.getElementById("editRent").value) || 0;
+      const first = parseFloat(document.getElementById("editFirst").value) || 0;
+      const second = parseFloat(document.getElementById("editSecond").value) || 0;
+      const other = parseFloat(document.getElementById("editOther").value) || 0;
+
+      // Get custom fields
+      const customFieldElems = document.querySelectorAll('#editCustomFields .custom-field-item');
+      let customTotal = 0;
+      const customData = [];
+
+      customFieldElems.forEach(group => {
+        const nameInput = group.querySelector('.custom-name');
+        const valueInput = group.querySelector('.custom-value');
+        const name = nameInput.value.trim();
+        const value = parseFloat(valueInput.value) || 0;
+        if (name) {
+          customData.push({ name, value });
+          customTotal += value;
+        }
+      });
+
+      const total = parent + rent + first + second + other + customTotal;
+      const saveable = salary - total;
+
+      // Find and update the entry
+      const entryIndex = logs.findIndex(log => log.id === currentEditingId);
+      if (entryIndex !== -1) {
+        logs[entryIndex] = {
+          ...logs[entryIndex],
+          salary,
+          parent,
+          rent,
+          first,
+          second,
+          other,
+          customData,
+          total,
+          saved: saveable
+        };
+
+        localStorage.setItem("savingsLogs", JSON.stringify(logs));
+        renderLogs();
+        updateStats();
+        closeEditModal();
+        
+        const emoji = saveable > 0 ? '🎉' : '😰';
+        showNotification(`Entry updated! ${emoji} New savings: ₱${saveable.toFixed(2)}`);
+        
+        if ('vibrate' in navigator) {
+          navigator.vibrate(200);
+        }
+      }
+    }
+
+    // Click outside modal to close
+    window.onclick = function(event) {
+      const modal = document.getElementById('editModal');
+      if (event.target === modal) {
+        closeEditModal();
+      }
+    }
+
+    function updateStats() {
+      const totalSaved = logs.reduce((sum, log) => sum + log.saved, 0);
+      const avgSavings = logs.length > 0 ? totalSaved / logs.length : 0;
+      const goal = 10000; // Default goal
+      const progress = Math.min((totalSaved / goal) * 100, 100);
+
+      document.getElementById('totalSaved').textContent = `₱${totalSaved.toFixed(2)}`;
+      document.getElementById('avgSavings').textContent = `₱${avgSavings.toFixed(2)}`;
+      document.getElementById('progressFill').style.width = `${progress}%`;
+
+      if (progress >= 100) {
+        showNotification('🎊 Congratulations! Goal achieved! 🎊');
+      }
+    }
+
+    function updateRaceStats() {
+      document.getElementById('racesWon').textContent = raceStats.won;
+      document.getElementById('totalRaces').textContent = raceStats.total;
+      const winRate = raceStats.total > 0 ? (raceStats.won / raceStats.total * 100).toFixed(1) : 0;
+      document.getElementById('winRate').textContent = `${winRate}%`;
+    }
+
+    function showStats() {
+      const totalSaved = logs.reduce((sum, log) => sum + log.saved, 0);
+      const totalSpent = logs.reduce((sum, log) => sum + log.total, 0);
+      const totalIncome = logs.reduce((sum, log) => sum + log.salary, 0);
+      
+      alert(`📊 Your Statistics:\n\n💰 Total Income: ₱${totalIncome.toFixed(2)}\n💸 Total Spent: ₱${totalSpent.toFixed(2)}\n💵 Total Saved: ₱${totalSaved.toFixed(2)}\n📈 Entries: ${logs.length}`);
+    }
+
+    function renderLogs() {
+      if (logs.length === 0) {
+        logBox.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">No entries yet. Start tracking your savings! 💪</p>';
+        return;
+      }
+
+      logBox.innerHTML = `
+        <table class="log-table">
+          <thead>
+            <tr>
+              <th>📅 Date</th>
+              <th>💰 Salary</th>
+              <th>👨‍👩‍👧‍👦 Parent</th>
+              <th>🏠 Rent</th>
+              <th>🛒 1st</th>
+              <th>🛒 2nd</th>
+              <th>💸 Other</th>
+              <th>⚙️ Custom</th>
+              <th>📊 Total</th>
+              <th>💵 Saved</th>
+              <th>✏️</th>
+              <th>🗑️</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${logs.map(log => `
+              <tr>
+                <td>${log.date}</td>
+                <td>₱${log.salary.toFixed(2)}</td>
+                <td>₱${log.parent.toFixed(2)}</td>
+                <td>₱${log.rent.toFixed(2)}</td>
+                <td>₱${log.first.toFixed(2)}</td>
+                <td>₱${log.second.toFixed(2)}</td>
+                <td>₱${log.other.toFixed(2)}</td>
+                <td>
+                  ${log.customData ? log.customData.map(f => `${f.name}: ₱${f.value.toFixed(2)}`).join("<br>") : ''}
+                </td>
+                <td>₱${log.total.toFixed(2)}</td>
+                <td style="color: ${log.saved >= 0 ? '#4CAF50' : '#f44336'}; font-weight: bold;">₱${log.saved.toFixed(2)}</td>
+                <td><button class="delete-btn" onclick="editEntry(${log.id})" style="background: linear-gradient(45deg, #4CAF50, #45a049);">✏️</button></td>
+                <td><button class="delete-btn" onclick="deleteEntry(${log.id})">✖</button></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    // Enhanced Horse Race
+    const horses = ['🐴', '🦄', '🐎', '🏇', '🎠', '🦌', '🐴'];
+    const horseNames = ['Thunder', 'Rainbow', 'Lightning', 'Champion', 'Carousel', 'Swift', 'Majestic'];
+    const raceTrack = document.getElementById('raceTrack');
+    const horseSelect = document.getElementById('horseSelect');
+    const result = document.getElementById('result');
+
+    function initializeRace() {
+      horses.forEach((horse, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${horseNames[index]} ${horse}`;
+        horseSelect.appendChild(option);
+
+        const horseElem = document.createElement('div');
+        horseElem.classList.add('horse');
+        horseElem.id = `horse${index}`;
+        horseElem.style.top = `${index * 45 + 20}px`;
+        horseElem.style.left = '10px';
+        horseElem.textContent = horse;
+        horseElem.title = horseNames[index];
+        raceTrack.appendChild(horseElem);
+      });
+    }
+
+    function randomBet() {
+      const randomIndex = Math.floor(Math.random() * horses.length);
+      horseSelect.value = randomIndex;
+      showNotification(`Lucky pick: ${horseNames[randomIndex]} ${horses[randomIndex]}! 🍀`);
+    }
+
+    function resetRace() {
+      horses.forEach((_, i) => {
+        const horseElem = document.getElementById(`horse${i}`);
+        horseElem.style.left = '10px';
+        horseElem.classList.remove('racing', 'winner');
+      });
+      result.textContent = '';
+      isRacing = false;
+    }
+
+    function startRace() {
+      if (isRacing) return;
+      
+      isRacing = true;
+      const userBet = parseInt(horseSelect.value);
+      const positions = Array(horses.length).fill(10);
+      result.textContent = '🏁 Race in progress...';
+
+      // Add racing animation
+      horses.forEach((_, i) => {
+        document.getElementById(`horse${i}`).classList.add('racing');
+      });
+
+      const raceInterval = setInterval(() => {
+        let winner = null;
+        const trackWidth = raceTrack.clientWidth - 80;
+
+        horses.forEach((_, i) => {
+          const move = Math.random() * 8 + 2; // More dynamic movement
+          positions[i] += move;
+          const horseElem = document.getElementById(`horse${i}`);
+          const progress = Math.min(positions[i], trackWidth);
+          horseElem.style.left = `${progress}px`;
+
+          if (positions[i] >= trackWidth && !winner) {
+            winner = i;
+            clearInterval(raceInterval);
+            
+            // Remove racing animation and add winner animation
+            horses.forEach((_, j) => {
+              const elem = document.getElementById(`horse${j}`);
+              elem.classList.remove('racing');
+              if (j === winner) {
+                elem.classList.add('winner');
+              }
+            });
+
+            // Update race statistics
+            raceStats.total++;
+            if (userBet === winner) {
+              raceStats.won++;
+            }
+            localStorage.setItem("raceStats", JSON.stringify(raceStats));
+            updateRaceStats();
+
+            const winText = `${horseNames[winner]} ${horses[winner]} wins!`;
+            const isWinner = userBet === winner;
+            result.innerHTML = isWinner 
+              ? `🎉 Congratulations! You won! 🏆<br>${winText}`
+              : `� Better luck next time!<br>${winText}`;
+
+            // Confetti effect for winners
+            if (isWinner) {
+              createConfetti();
+              if ('vibrate' in navigator) {
+                navigator.vibrate([200, 100, 200]);
+              }
+            }
+
+            isRacing = false;
+            setTimeout(resetRace, 3000);
+          }
+        });
+      }, 100);
+    }
+
+    function createConfetti() {
+      const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.style.position = 'fixed';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.top = '-10px';
+          confetti.style.width = '10px';
+          confetti.style.height = '10px';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animation = 'confettiFall 3s linear forwards';
+          confetti.style.zIndex = '9999';
+          document.body.appendChild(confetti);
+
+          setTimeout(() => confetti.remove(), 3000);
+        }, i * 30);
+      }
+    }
+
+    // Add confetti animation CSS
+    const confettiStyle = document.createElement('style');
+    confettiStyle.textContent = `
+      @keyframes confettiFall {
+        to {
+          transform: translateY(100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+      @keyframes slideOut {
+        to {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(confettiStyle);
+
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', () => {
+      renderLogs();
+      loadCustomFields();
+      updateStats();
+      initializeRace();
+      updateRaceStats();
+      setupThemeDetection();
+      
+      // Add touch feedback for better mobile experience
+      document.querySelectorAll('input, button, select').forEach(element => {
+        element.addEventListener('touchstart', function() {
+          this.style.transform = 'scale(0.98)';
+        });
+        element.addEventListener('touchend', function() {
+          this.style.transform = 'scale(1)';
+        });
+      });
+    });
+
+    // Dynamic theme detection and status bar color update
+    function setupThemeDetection() {
+      const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const lightModeMediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+      
+      function updateThemeColor(isDark) {
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        if (isDark) {
+          themeColorMeta.content = '#2d3748'; // Dark theme color
+        } else {
+          themeColorMeta.content = '#6246ea'; // Light theme color
+        }
+        
+        // Update status bar style for iOS
+        const statusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+        if (statusBarMeta) {
+          statusBarMeta.content = isDark ? 'black-translucent' : 'default';
+        }
+        
+        // Show notification when theme changes
+        showNotification(`Switched to ${isDark ? 'dark' : 'light'} mode! 🌙🌟`);
+      }
+      
+      // Initial theme setup
+      updateThemeColor(darkModeMediaQuery.matches);
+      
+      // Listen for theme changes
+      darkModeMediaQuery.addEventListener('change', (e) => {
+        if (e.matches) {
+          updateThemeColor(true);
+        }
+      });
+      
+      lightModeMediaQuery.addEventListener('change', (e) => {
+        if (e.matches) {
+          updateThemeColor(false);
+        }
+      });
+    }
+
+    // Handle app visibility changes
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        console.log('App went to background');
+      } else {
+        console.log('App came to foreground');
+        updateStats();
+        updateRaceStats();
+      }
+    });
+  </script>
+</body>
+</html>
