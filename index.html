@@ -417,13 +417,25 @@
 
     .custom-field-item {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: end;
       margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
     .custom-field-item input {
       flex: 1;
+      min-width: 120px;
+    }
+
+    .custom-field-item .custom-name {
+      flex: 1.5;
+      min-width: 140px;
+    }
+
+    .custom-field-item .custom-value {
+      flex: 1;
+      min-width: 100px;
     }
 
     .remove-btn {
@@ -435,6 +447,7 @@
       cursor: pointer;
       font-size: 16px;
       min-width: 50px;
+      flex-shrink: 0;
     }
 
     .modal {
@@ -589,6 +602,68 @@
       
       .log-table th, .log-table td {
         padding: 8px;
+      }
+
+      .custom-field-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+      }
+
+      .custom-field-item input {
+        min-width: unset;
+        width: 100%;
+        margin-bottom: 5px;
+      }
+
+      .custom-field-item .custom-name,
+      .custom-field-item .custom-value {
+        min-width: unset;
+        width: 100%;
+      }
+
+      .remove-btn {
+        padding: 12px;
+        font-size: 14px;
+        align-self: center;
+        max-width: 120px;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      .modal-content {
+        padding: 15px;
+        margin: 5% 10px;
+        width: calc(100% - 20px);
+      }
+    }
+
+    /* Medium screen adjustments */
+    @media (max-width: 768px) and (min-width: 481px) {
+      .custom-field-item {
+        gap: 6px;
+      }
+
+      .custom-field-item .custom-name {
+        flex: 1.2;
+        min-width: 120px;
+      }
+
+      .custom-field-item .custom-value {
+        flex: 0.8;
+        min-width: 80px;
+      }
+
+      .remove-btn {
+        padding: 12px;
+        font-size: 14px;
+        min-width: 45px;
       }
     }
 
@@ -752,6 +827,22 @@
         background: linear-gradient(45deg, #81c784, #66bb6a);
       }
     }
+
+      /* Dark mode responsive adjustments */
+      @media (prefers-color-scheme: dark) {
+        .custom-field-item {
+          background: rgba(74, 85, 104, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+      }
+
+      /* Light mode responsive adjustments */
+      @media (prefers-color-scheme: light) {
+        .custom-field-item {
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+      }
 
     /* Light mode specific overrides */
     @media (prefers-color-scheme: light) {
